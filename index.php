@@ -14,4 +14,4 @@
 $payloadQrCode = $obPayload->getPayload();
 
 echo '<pre>';
-print_r($obPayload);
+print_r($payloadQrCode);

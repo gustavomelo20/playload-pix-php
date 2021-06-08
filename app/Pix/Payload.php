@@ -69,13 +69,32 @@ class Payload{
 
         }
 
+        private function getAdditionaalDataFieldTemplete(){
+
+        }
+
         public function getMerchatAccountInformation(){
+            $gui = $this->getValue(self::ID_MERCHANT_ACCOUNT_INFORMATION_GUI, 'br.gov.bcb.pix'); //Dominio Bacen
+            $key = $this->getValue(self::ID_MERCHANT_ACCOUNT_INFORMATION_KEY, $this->pixKey);
+            $description = strlen($this->description) ? $this->getValue(self::ID_MERCHANT_ACCOUNT_INFORMATION_DESCRIPTION, $this->description) : '';
             
+            return $this->getValue(self::ID_MERCHANT_ACCOUNT_INFORMATION, $gui.$key.$description);
+
         }
 
         public function getPayload(){
 
-            $payload = $this->getValue(self::ID_PAYLOAD_FORMAT_INDICATOR, '01');
+            $payload = $this->getValue(self::ID_PAYLOAD_FORMAT_INDICATOR, '01').
+                       $this->getMerchatAccountInformation().
+                       $this->getValue(self::ID_MERCHANT_CATEGORY_CODE, '0000').
+                       $this->getValue(self::ID_TRANSACTION_CURRENCY,'986').
+                       $this->getValue(self::ID_TRANSACTION_AMOUNT, $this->amount).
+                       $this->getValue(self::ID_COUNTRY_CODE,'BR').
+                       $this->getValue(self::ID_MERCHANT_NAME, $this->merchantName).
+                       $this->getValue(self::ID_MERCHANT_CITY, $this->merchantCity).
+                       $this->getValue(self::ID_ADDITIONAL_DATA_FIELD_TEMPLATE,'').
+                       $this->getValue(self::ID_ADDITIONAL_DATA_FIELD_TEMPLATE_TXID,'').
+                       $this->getValue(self::ID_CRC16,'');
 
             return $payload;
             
