@@ -47,7 +47,7 @@ class Payload{
             return $this;
         }
 
-        public function setDescription($pixKey){
+        public function setDescription($description){
             $this->description = $description;
            return $this;
         }

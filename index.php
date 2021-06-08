@@ -5,7 +5,12 @@
 
  use \App\Pix\Payload;
 
- $obPayload =  (new Payload)->setPixKey('infogustavomelo@gmail.com');
+ $obPayload =  (new Payload)->setPixKey('infogustavomelo@gmail.com')
+                            ->setDescription('Pagamento do pedido 01')
+                            ->setMerchantName('Gustavo Melo')
+                            ->setMerchantCity('São Paulo')
+                            ->setTxid('pay01')
+                            ->setAmount(100.00);
 
-echo '<prev>';
- print_r($obPayload);
+echo '<pre>';
+print_r($obPayload);
