@@ -25,20 +25,10 @@ class Payload{
 
 
         private $pixKey;
-
-
         private $description;
-
-
         private $merchantName;
-
-
         private $merchantCity;
-
-
         private $txid;
-
-
         private $amount;
 
 
@@ -71,6 +61,26 @@ class Payload{
             return $this;
         }
 
+        public function getValue($id, $value){
+
+            $size = str_pad(strlen($value), 2, '0', STR_PAD_LEFT);
+
+            return $id.$size.$value; 
+
+        }
+
+        public function getMerchatAccountInformation(){
+            
+        }
+
+        public function getPayload(){
+
+            $payload = $this->getValue(self::ID_PAYLOAD_FORMAT_INDICATOR, '01');
+
+            return $payload;
+            
+
+        }
 
 
 

@@ -11,6 +11,7 @@
                             ->setMerchantCity('São Paulo')
                             ->setTxid('pay01')
                             ->setAmount(100.00);
+$payloadQrCode = $obPayload->getPayload();
 
 echo '<pre>';
 print_r($obPayload);
