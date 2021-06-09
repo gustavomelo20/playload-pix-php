@@ -71,7 +71,12 @@ class Payload{
 
         private function getAdditionaalDataFieldTemplete(){
 
+            $txid = $this->getValue(self::ID_ADDITIONAL_DATA_FIELD_TEMPLATE_TXID, $this->txid);
+            return $this->getValue(self::ID_ADDITIONAL_DATA_FIELD_TEMPLATE, $txid);
+
         }
+
+        
 
         public function getMerchatAccountInformation(){
             $gui = $this->getValue(self::ID_MERCHANT_ACCOUNT_INFORMATION_GUI, 'br.gov.bcb.pix'); //Dominio Bacen
@@ -92,13 +97,33 @@ class Payload{
                        $this->getValue(self::ID_COUNTRY_CODE,'BR').
                        $this->getValue(self::ID_MERCHANT_NAME, $this->merchantName).
                        $this->getValue(self::ID_MERCHANT_CITY, $this->merchantCity).
-                       $this->getValue(self::ID_ADDITIONAL_DATA_FIELD_TEMPLATE,'').
-                       $this->getValue(self::ID_ADDITIONAL_DATA_FIELD_TEMPLATE_TXID,'').
-                       $this->getValue(self::ID_CRC16,'');
+                       $this->getAdditionaalDataFieldTemplete();
 
-            return $payload;
+            return $payload.$this->getCRC16($payload);
             
+        }
 
+        private function getCRC16($payload) {
+            //ADICIONA DADOS GERAIS NO PAYLOAD
+            $payload .= self::ID_CRC16.'04';
+      
+            //DADOS DEFINIDOS PELO BACEN
+            $polinomio = 0x1021;
+            $resultado = 0xFFFF;
+      
+            //CHECKSUM
+            if (($length = strlen($payload)) > 0) {
+                for ($offset = 0; $offset < $length; $offset++) {
+                    $resultado ^= (ord($payload[$offset]) << 8);
+                    for ($bitwise = 0; $bitwise < 8; $bitwise++) {
+                        if (($resultado <<= 1) & 0x10000) $resultado ^= $polinomio;
+                        $resultado &= 0xFFFF;
+                    }
+                }
+            }
+      
+            //RETORNA CÓDIGO CRC16 DE 4 CARACTERES
+            return self::ID_CRC16.'04'.strtoupper(dechex($resultado));
         }
 
 
