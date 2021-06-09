@@ -1,7 +1,7 @@
 # playload-pix-php
 
 # QrCode
-<img src="qr.jpg">
+<img src="qr.png">
 
 # Teste Leitura 
 <img src="pix.jpg">
